@@ -8,9 +8,9 @@ class Drop:
 
     def drop_all(self):
         cursor = self.cnx.cursor()
-        clean_product = "DROP TABLE Product"
-        clean_cat = "DROP TABLE Category"
-        clean_sub = "DROP TABLE substitute"
+        clean_product = "TRUNCATE TABLE Product"
+        clean_cat = " TRUNCATE Category"
+        clean_sub = "TRUNCATE TABLE substitute"
         cursor.execute(clean_product, clean_cat, clean_sub)
         self.cnx.commit()
         cursor.close()

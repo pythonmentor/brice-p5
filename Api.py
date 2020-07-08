@@ -29,23 +29,27 @@ class Api:
                                   'nutriscore': attribute['nutrition_grades_tags'][0],
                                   'link': 'https://world.openfoodfacts.org/product/{}'.format(attribute['code']),
                                   'id': attribute['code'],
-                                  'details': self.filter_generic_name(attribute),
-                                  'store:': attribute['stores']
+                                  'details': attribute['generic_name_fr'],
+                                  'stores': attribute['stores_tags'][0].strip(),
+                                  'categories': attribute['categories_tags'][0]
                                   }
-
-                except KeyError:
-                    return 'Aucun'
-                else:
                     product_details.append(attributes)
+                except (IndexError, KeyError):
+                    return 'Aucun'
+
                 finally:
-                    return product_details
+                    print(product_details)
 
-    def filter_generic_name(self, attribute):
-        try:
-            return attribute['generic_name_fr']
+    #def filter_category(self, attribute):
+      #  pass
+      # self.category = []
+       # categories = attribute['categories_tags']
+        #for cat in categories:
+           # if cat = :
+             #   self.category.append(cat)
+              #  print(self.category)
 
-        except KeyError:
-            return None
+
 
 d = Api()
 d.filter_data()
