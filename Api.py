@@ -8,9 +8,11 @@ class Api:
                            'json': 1,
                            'countries': 'France',
                            'sort_by': 'unique_scans_n',
-                           'page_size': 1000,
+                           'page_size': 100,
                            'page': 1
                            }
+        self.product_list = []
+        self.categories_list = []
 
     def get_product(self):
         products = []
@@ -21,7 +23,6 @@ class Api:
 
     def filter_data(self):
         products = self.get_product()
-        product_details = []
         for product in products:
             for attribute in product:
                 try:
@@ -31,25 +32,29 @@ class Api:
                                   'id': attribute['code'],
                                   'details': attribute['generic_name_fr'],
                                   'stores': attribute['stores_tags'][0].strip(),
-                                  'categories': attribute['categories_tags'][0]
+                                  'categories': self.filter_category(attribute)
                                   }
-                    product_details.append(attributes)
+
                 except (IndexError, KeyError):
-                    return 'Aucun'
+                    continue
 
-                finally:
-                    print(product_details)
+                self.product_list.append(attributes)
 
-    #def filter_category(self, attribute):
-      #  pass
-      # self.category = []
-       # categories = attribute['categories_tags']
-        #for cat in categories:
-           # if cat = :
-             #   self.category.append(cat)
-              #  print(self.category)
+    def filter_category(self, attribute):
+        categories = attribute['categories'].split(',')
+        for category_to_add in categories:
+            category = category_to_add.strip().capitalize()
+            return category
 
+    def clean_product(self):
+        self.filter_data()
+        dict_keys = self.product_list[0].keys()
+        for detail in self.product_list:
+            for keys in dict_keys:
+                if not detail[keys]:
+                    self.product_list.remove(detail)
 
 
 d = Api()
-d.filter_data()
+d.clean_product()
+
