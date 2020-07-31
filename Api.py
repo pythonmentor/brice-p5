@@ -1,25 +1,27 @@
 import requests
+from Setup import CATEGORIES_LIST
 
 
 class Api:
 
     def __init__(self):
-        self.parameters = {'action': 'process',
-                           'json': 1,
-                           'countries': 'France',
-                           'sort_by': 'unique_scans_n',
-                           'page_size': 100,
-                           'page': 1
-                           }
         self.product_list = []
-        self.categories_list = []
 
     def get_product(self):
         products = []
-        r = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params=self.parameters)
-        result = r.json()
-        products.append(result['products'])
-        return products
+        i = 0
+        while i < 5:
+            r = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params={'action': 'process',
+                                                                                   'json': 1,
+                                                                                   'countries': 'France',
+                                                                                   'tag_0': CATEGORIES_LIST[i],
+                                                                                   'sort_by': 'unique_scans_n',
+                                                                                   'page_size': 100,
+                                                                                   'page': 1,
+                                                                                   })
+            result = r.json()
+            products.append(result['products'])
+            return products
 
     def filter_data(self):
         products = self.get_product()
@@ -29,7 +31,7 @@ class Api:
                     attributes = {'product_name': attribute['product_name_fr'],
                                   'nutriscore': attribute['nutrition_grades_tags'][0],
                                   'link': 'https://world.openfoodfacts.org/product/{}'.format(attribute['code']),
-                                  'id': attribute['code'],
+                                  'code': attribute['code'],
                                   'details': attribute['generic_name_fr'],
                                   'stores': attribute['stores_tags'][0].strip(),
                                   'categories': self.filter_category(attribute)
@@ -42,9 +44,11 @@ class Api:
 
     def filter_category(self, attribute):
         categories = attribute['categories'].split(',')
-        for category_to_add in categories:
-            category = category_to_add.strip().capitalize()
-            return category
+        for item in CATEGORIES_LIST:
+            for category_to_add in categories:
+                category = category_to_add.strip().capitalize()
+                if category == item:
+                    return category
 
     def clean_product(self):
         self.filter_data()
@@ -52,8 +56,10 @@ class Api:
         for detail in self.product_list:
             for keys in dict_keys:
                 if not detail[keys]:
-                    self.product_list.remove(detail)
-
+                    try:
+                        self.product_list.remove(detail)
+                    except ValueError:
+                        pass
 
 d = Api()
 d.clean_product()
