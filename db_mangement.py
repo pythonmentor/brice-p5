@@ -1,29 +1,25 @@
 import mysql.connector
-from Api import Api
+
+from Setup import CATEGORIES_LIST
 
 
 class Dbmanagement:
 
     def __init__(self):
-        self.cnx = mysql.connector.connect(user='root', password='enurox123', host='localhost', database='mydb')
-        self.data = Api()
-        self.data.clean_product()
+        self.cnx = mysql.connector.connect(user='root', password='Enurox123', host='localhost', database='mydb')
 
     def insert_categories(self):
+        sql_insert = "INSERT INTO Category (name) VALUES (%(category)s)"
         cursor = self.cnx.cursor()
-        for item['categories'] in self.data.product_list:
-            cursor.executemany("""Insert IGNORE INTO Category(name)
-                              VALUES (%(item['categories'])s""")
-
+        for category in CATEGORIES_LIST:
+            category_to_add = {'category': category}
+            cursor.execute(sql_insert, category_to_add)
         self.cnx.commit()
         cursor.close()
 
     def insert_product(self):
         pass
 
-
-dat = Dbmanagement()
-dat.insert_categories()
 
 
 

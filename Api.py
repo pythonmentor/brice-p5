@@ -9,19 +9,18 @@ class Api:
 
     def get_product(self):
         products = []
-        i = 0
-        while i < 5:
+        for category in CATEGORIES_LIST:
             r = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params={'action': 'process',
                                                                                    'json': 1,
                                                                                    'countries': 'France',
-                                                                                   'tag_0': CATEGORIES_LIST[i],
+                                                                                   'tag_0': category,
                                                                                    'sort_by': 'unique_scans_n',
                                                                                    'page_size': 100,
                                                                                    'page': 1,
                                                                                    })
             result = r.json()
             products.append(result['products'])
-            return products
+        return products
 
     def filter_data(self):
         products = self.get_product()

@@ -4,14 +4,13 @@ import mysql.connector
 class Drop:
 
     def __init__(self):
-        self.cnx = mysql.connector.connect(user='root', password='enurox123', host='localhost', database='mydb')
+        self.cnx = mysql.connector.connect(user='root', password='Enurox123', host='localhost', database='mydb')
 
     def drop_all(self):
         cursor = self.cnx.cursor()
-        clean_product = "TRUNCATE TABLE Product"
-        clean_cat = " TRUNCATE Category"
-        clean_sub = "TRUNCATE TABLE substitute"
-        cursor.execute(clean_product, clean_cat, clean_sub)
+        cursor.execute("DROP TABLE subtitute")
+        cursor.execute("DROP TABLE Product")
+        cursor.execute("DROP TABLE Category")
         self.cnx.commit()
         cursor.close()
 
