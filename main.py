@@ -6,5 +6,6 @@ if __name__ == '__main__':
     ap.clean_product()
     data = Dbmanagement()
     data.insert_categories()
+    data.insert_product()
 
 
