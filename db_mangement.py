@@ -4,38 +4,40 @@ from Setup import CATEGORIES_LIST
 
 
 class Dbmanagement:
-
     def __init__(self):
-        self.cnx = mysql.connector.connect(user='root', password='Enurox123', host='localhost', database='mydb')
+        self.cnx = mysql.connector.connect(
+            user='myuser',
+            password='daPython.2020',
+            host='localhost',
+            database='mydb',
+        )
         self.cursor = self.cnx.cursor()
 
     def insert_categories(self):
+        cursor = self.cnx.cursor()
         sql_insert_cat = "INSERT INTO Category (name) VALUES (%(category)s)"
         for category in CATEGORIES_LIST:
             category_to_add = {'category': category}
-            self.cursor.execute(sql_insert_cat, category_to_add)
+            cursor.execute(sql_insert_cat, category_to_add)
         self.cnx.commit()
-        self.cursor.close()
+        cursor.close()
 
     def insert_product(self):
-        sql_insert_prod = ("INSERT IGNORE INTO Product (name, description, store, link, nutriscore, barcode)"
-                           "VALUES((%s), (%s), (%s), (%s), (%s), (%s))")
+        cursor = self.cnx.cursor()
+        sql_insert_prod = (
+            "INSERT IGNORE INTO Product (id, name, description, store, link, nutriscore, category_id)"
+            "VALUES(%(code)s, %(product_name)s, %(details)s, %(stores)s, %(link)s, %(nutriscore)s, (SELECT id from Category WHERE name = %(categories)s))"
+        )
         prod = Api()
         prod.clean_product()
         for item in prod.product_list:
-            add_prod = (item['product_name'],
-                        item['details'],
-                        item['stores'],
-                        item['link'],
-                        item['nutriscore'],
-                        item['code'])
-
-            self.cursor.execute(sql_insert_prod, add_prod)
+            cursor.execute(sql_insert_prod, item)
         self.cnx.commit()
-        self.cursor.close()
+        cursor.close()
         print('fini')
 
 
 Db = Dbmanagement()
+Db.insert_categories()
 Db.insert_product()
 

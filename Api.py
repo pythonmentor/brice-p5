@@ -3,21 +3,24 @@ from Setup import CATEGORIES_LIST
 
 
 class Api:
-
     def __init__(self):
         self.product_list = []
 
     def get_product(self):
         products = []
         for category in CATEGORIES_LIST:
-            r = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params={'action': 'process',
-                                                                                   'json': 1,
-                                                                                   'countries': 'France',
-                                                                                   'tag_0': category,
-                                                                                   'sort_by': 'unique_scans_n',
-                                                                                   'page_size': 100,
-                                                                                   'page': 1,
-                                                                                   })
+            r = requests.get(
+                'https://fr.openfoodfacts.org/cgi/search.pl',
+                params={
+                    'action': 'process',
+                    'json': 1,
+                    'countries': 'France',
+                    'tag_0': category,
+                    'sort_by': 'unique_scans_n',
+                    'page_size': 100,
+                    'page': 1,
+                },
+            )
             result = r.json()
             products.append(result['products'])
         return products
@@ -27,14 +30,17 @@ class Api:
         for product in products:
             for attribute in product:
                 try:
-                    attributes = {'product_name': attribute['product_name_fr'],
-                                  'nutriscore': attribute['nutrition_grades_tags'][0],
-                                  'link': 'https://world.openfoodfacts.org/product/{}'.format(attribute['code']),
-                                  'code': attribute['code'],
-                                  'details': attribute['generic_name_fr'],
-                                  'stores': attribute['stores_tags'][0].strip(),
-                                  'categories': self.filter_category(attribute)
-                                  }
+                    attributes = {
+                        'product_name': attribute['product_name_fr'],
+                        'nutriscore': attribute['nutrition_grades_tags'][0],
+                        'link': 'https://world.openfoodfacts.org/product/{}'.format(
+                            attribute['code']
+                        ),
+                        'code': attribute['code'],
+                        'details': attribute['generic_name_fr'],
+                        'stores': attribute['stores_tags'][0].strip(),
+                        'categories': self.filter_category(attribute),
+                    }
 
                 except (IndexError, KeyError):
                     continue
@@ -59,6 +65,7 @@ class Api:
                         self.product_list.remove(detail)
                     except ValueError:
                         pass
+
 
 d = Api()
 d.clean_product()
