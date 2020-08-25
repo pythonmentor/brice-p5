@@ -36,6 +36,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Product` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `barcode`BIGINT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(220) NOT NULL,
   `store` VARCHAR(45) NOT NULL,

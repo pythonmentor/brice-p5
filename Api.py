@@ -33,9 +33,7 @@ class Api:
                     attributes = {
                         'product_name': attribute['product_name_fr'],
                         'nutriscore': attribute['nutrition_grades_tags'][0],
-                        'link': 'https://world.openfoodfacts.org/product/{}'.format(
-                            attribute['code']
-                        ),
+                        'link': 'https://world.openfoodfacts.org/product/{}'.format(attribute['code']),
                         'code': attribute['code'],
                         'details': attribute['generic_name_fr'],
                         'stores': attribute['stores_tags'][0].strip(),
@@ -66,7 +64,4 @@ class Api:
                     except ValueError:
                         pass
 
-
-d = Api()
-d.clean_product()
 
