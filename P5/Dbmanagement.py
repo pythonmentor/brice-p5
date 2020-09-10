@@ -51,7 +51,7 @@ class Dbmanagement:
     def return_product(self, choice_cat):
         cursor = self.cnx.cursor()
         sql_return_prod = (
-            "SELECT id,name,description,link,nutriscore FROM Product WHERE category_id = %(choice)s"
+            "SELECT id,name,description,link,nutriscore,store FROM Product WHERE category_id = %(choice)s"
         )
         cursor.execute(sql_return_prod, {'choice': choice_cat})
         fetch = cursor.fetchall()
@@ -59,8 +59,11 @@ class Dbmanagement:
         for item in fetch:
             result.append(item)
         random_answer = random.choices(result, k=10)
-        print('Voici les produits que nous vous proposons:', random_answer)
-        return random_answer
+        print('voici les produits:')
+        for i in random_answer:
+            product = str(i)
+            print(product.replace("'", '').strip("()"))
+
 
     def insert_substitute(self, product):
         cursor = self.cnx.cursor()
