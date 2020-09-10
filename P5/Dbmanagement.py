@@ -1,6 +1,7 @@
 import mysql.connector
 from Api import Api
 from Setup import CATEGORIES_LIST
+import random
 
 
 class Dbmanagement:
@@ -28,7 +29,9 @@ class Dbmanagement:
         cursor.execute(sql_return_cat)
         fetch = cursor.fetchall()
         for rows in fetch:
-            print(rows)
+            for word in rows:
+                result = str(word).strip("(')")
+                print(result)
         cursor.close()
 
     def insert_product(self):
@@ -45,15 +48,19 @@ class Dbmanagement:
         self.cnx.commit()
         cursor.close()
 
-    def return_product(self):
+    def return_product(self, choice_cat):
         cursor = self.cnx.cursor()
         sql_return_prod = (
-            "SELECT product FROM WHERE category_id = {choice_cat}"
+            "SELECT id,name,description,link,nutriscore FROM Product WHERE category_id = %(choice)s"
         )
-        cursor.execute(sql_return_prod)
+        cursor.execute(sql_return_prod, {'choice': choice_cat})
         fetch = cursor.fetchall()
+        result = []
         for item in fetch:
-            print(item)
+            result.append(item)
+        random_answer = random.choices(result, k=10)
+        print('Voici les produits que nous vous proposons:', random_answer)
+        return random_answer
 
     def insert_substitute(self, product):
         cursor = self.cnx.cursor()

@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Product` (
     FOREIGN KEY (`category_id`)
     REFERENCES `mydb`.`Category` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION
 ENGINE = InnoDB;
 
 

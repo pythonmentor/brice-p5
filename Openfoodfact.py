@@ -1,4 +1,4 @@
-from Dbmanagement import Dbmanagement
+from P5.Dbmanagement import Dbmanagement
 
 
 class Openfoodfact:
@@ -13,8 +13,7 @@ class Openfoodfact:
         self.data.return_categories()
         choice_cat = int(input("Veuillez entrer le numéro de la catégorie souhaitée."))
         print(choice_cat)
-        self.data.insert_product()
-
+        self.data.return_product(choice_cat)
 
 
 op = Openfoodfact()
