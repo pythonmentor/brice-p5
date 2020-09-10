@@ -1,5 +1,5 @@
 import requests
-from Setup import CATEGORIES_LIST
+from P5.Setup import CATEGORIES_LIST
 
 
 class Api:

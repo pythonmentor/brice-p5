@@ -1,6 +1,6 @@
 import mysql.connector
-from Api import Api
-from Setup import CATEGORIES_LIST
+from P5.Api import Api
+from P5.Setup import CATEGORIES_LIST
 import random
 
 
