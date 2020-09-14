@@ -13,6 +13,7 @@ class Dbmanagement:
             host='localhost',
             database='mydb',
         )
+        self.result = []
 
     def insert_categories(self):
         cursor = self.cnx.cursor()
@@ -55,15 +56,13 @@ class Dbmanagement:
         )
         cursor.execute(sql_return_prod, {'choice': choice_cat})
         fetch = cursor.fetchall()
-        result = []
         for item in fetch:
-            result.append(item)
-        random_answer = random.choices(result, k=10)
+            self.result.append(item)
+        random_answer = random.choices(self.result, k=10)
         print('voici les produits:')
         for i in random_answer:
             product = str(i)
             print(product.replace("'", '').strip("()"))
-
 
     def insert_substitute(self, product):
         cursor = self.cnx.cursor()
