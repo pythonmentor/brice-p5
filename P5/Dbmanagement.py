@@ -56,13 +56,7 @@ class Dbmanagement:
         cursor.execute(sql_return_prod, {'choice': choice_cat})
         fetch = cursor.fetchall()
         print(fetch)
-        """for item in fetch:
-            self.result.append(item)
-        random_answer = random.choices(self.result, k=10)
-        print('voici les produits:')
-        for i in random_answer:
-            product = str(i)
-            print(product.replace("'", '').strip("()"))"""
+
 
     def insert_substitute(self, product):
         cursor = self.cnx.cursor()
