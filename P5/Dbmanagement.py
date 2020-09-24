@@ -54,6 +54,7 @@ class Dbmanagement:
         cursor.execute(sql_return_prod, {'choice': choice_cat})
         fetch = cursor.fetchall()
         for i in fetch:
+            self.result.append(i)
             rows = str(i).strip('()').replace("'", "")
             print(rows)
 

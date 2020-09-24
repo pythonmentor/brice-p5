@@ -23,7 +23,7 @@ class Openfoodfact:
             for i in item:
                 if i == choice_prod:
                     print('Voici le produit sélectionné.')
-                    print(str(item).strip('()'))
+                    print(str(item).strip('()').replace("'", ""))
 
     def choice_sub(self):
         choice_sub = str(input("Souhaitez vous un substitut avec ce produits ? (oui, non)"))
