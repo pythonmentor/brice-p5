@@ -1,7 +1,6 @@
 import mysql.connector
 from P5.Api import Api
 from P5.Setup import CATEGORIES_LIST
-import random
 
 
 class Dbmanagement:
@@ -52,11 +51,11 @@ class Dbmanagement:
     def return_product(self, choice_cat):
         cursor = self.cnx.cursor()
         sql_return_prod = "SELECT id,name,description,link,nutriscore,store FROM Product WHERE category_id = %(choice)s ORDER BY RAND() LIMIT 10"
-
         cursor.execute(sql_return_prod, {'choice': choice_cat})
         fetch = cursor.fetchall()
-        print(fetch)
-
+        for i in fetch:
+            rows = str(i).strip('()').replace("'", "")
+            print(rows)
 
     def insert_substitute(self, product):
         cursor = self.cnx.cursor()
